@@ -20,7 +20,7 @@ class ServerRequest implements ServerRequestInterface {
         }
     }
 
-    public static function generateFromGlobals(): ServerRequest {
+    public static function generateFromGlobals(): self {
         $params = [];
 
         $params['protocol'] = substr( $_SERVER['SERVER_PROTOCOL'], strpos( $_SERVER['SERVER_PROTOCOL'], '/' )+1 );

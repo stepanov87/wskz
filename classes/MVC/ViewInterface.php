@@ -2,8 +2,8 @@
 
 namespace MVC;
 
-interface View {
+interface ViewInterface {
 
-    public function output();
+    public function output($output);
 
 }

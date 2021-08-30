@@ -3,18 +3,33 @@
 namespace Http\Message;
 
 use Http\Message\ResponseInterface;
+use Http\Message\RequestBody;
 
 class Response implements ResponseInterface {
     private $statusCode;
     private $reasonPhrase;
     private $protocol;
-    private $method;
     private $headers;
     private $body;
 
     public function __construct($params) {
-        $this->protocol = substr( $_SERVER['SERVER_PROTOCOL'], strpos( $_SERVER['SERVER_PROTOCOL'], '/' )+1 );
-        $this->headers = [];
+        foreach ($params as $key => $param) {
+            if ( property_exists($this, $key) ) {
+                $this->$key = $param;
+            }
+        }
+    }
+
+    public static function generateDefault(): self {
+        $params = [];
+
+        $params['protocol'] = substr( $_SERVER['SERVER_PROTOCOL'], strpos( $_SERVER['SERVER_PROTOCOL'], '/' )+1 );
+        $params['method'] = $_SERVER['REQUEST_METHOD'];
+        $params['URI'] = $_SERVER['REQUEST_URI'];
+        $params['headers'] = [];
+        $params['body'] = new RequestBody();
+
+        return new Response($params);
     }
 
     /**
@@ -25,7 +40,9 @@ class Response implements ResponseInterface {
      *
      * @return int Status code.
      */
-    public function getStatusCode() { }
+    public function getStatusCode() {
+        return $this->statusCode;
+    }
 
     /**
      * Return an instance with the specified status code and, optionally, reason phrase.
@@ -84,7 +101,9 @@ class Response implements ResponseInterface {
      *
      * @return string HTTP protocol version.
      */
-    public function getProtocolVersion() { }
+    public function getProtocolVersion() {
+        return $this->protocol;
+    }
 
     /**
      * Return an instance with the specified HTTP protocol version.
@@ -211,7 +230,13 @@ class Response implements ResponseInterface {
      * @throws \InvalidArgumentException for invalid header names.
      * @throws \InvalidArgumentException for invalid header values.
      */
-    public function withAddedHeader($name, $value) { }
+    public function withAddedHeader($name, $value) {
+        $new = clone $this;
+
+        $new->headers[$name] = $value;
+
+        return $new;
+    }
 
     /**
      * Return an instance without the specified header.
@@ -232,7 +257,9 @@ class Response implements ResponseInterface {
      *
      * @return StreamInterface Returns the body as a stream.
      */
-    public function getBody() { }
+    public function getBody() {
+        return $this->body;
+    }
 
     /**
      * Return an instance with the specified message body.
@@ -247,6 +274,11 @@ class Response implements ResponseInterface {
      * @return static
      * @throws \InvalidArgumentException When the body is not valid.
      */
-    public function withBody(StreamInterface $body) { }
+    public function withBody(StreamInterface $body) {
+        $new = clone $this;
+        $new->body = $body;
+
+        return $new;
+    }
 
 }

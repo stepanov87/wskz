@@ -12,10 +12,8 @@ use Middleware\Dispatcher\DispatcherTrait;
 class CommandDispatcher implements DispatcherInterface, MiddlewareInterface {
     use DispatcherTrait;
 
-    public function dispatch() {
-    }
+    public function dispatch() { }
 
-    public function process() {
-    }
+    public function process() { }
 
 }

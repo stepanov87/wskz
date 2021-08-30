@@ -6,7 +6,7 @@ ini_set('display_errors', 1);
 require __DIR__ . '/AutoLoader.php';
 
 use Middleware\Switcher;
-use Output\Output;
+use Http\Output;
 
 $switcher = new Switcher();
 

@@ -28,7 +28,7 @@ class Switcher {
     }
 
     public function execute() {
-        $this->dispatcher->dispatch();
+        return $this->dispatcher->dispatch();
     }
 
 }

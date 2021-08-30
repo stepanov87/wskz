@@ -43,6 +43,10 @@ class Config implements \Iterator {
         $this->uri_masks = array_keys($this->items);
     }
 
+    public function getItem(string $key) {
+        return $this->items[$key];
+    }
+
     public function get(string $key) {
         return $this->uri_masks[$key];
     }

@@ -12,9 +12,13 @@ class Output {
     }
 
     public function send() {
-        $headers = $this->response->getHeaders();
+        foreach ($this->response->getHeaders() as $header_name => $header_value) {
+            header("$header_name: $header_value");
+        }
 
-        print_r($headers);
+        header( 'HTTP/' . $this->response->getProtocolVersion() . ' ' . $this->response->getStatusCode() );
+
+        echo $this->response->getBody();
     }
 
 }
